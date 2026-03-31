@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Select from '@mui/material/Select';
@@ -22,20 +22,22 @@ const Main = (props) => {
 	const [password, setPassword] = useState('xxx')
 	const [accessToken, setAccessToken] = useState('')
 
-	const post = (data, cb) => {
-		api.post(data, { accessToken }).then(({ data }) => {
-			setLogs([...logs, data])
+	const post = useCallback((payload, cb) => {
+		api.post(payload, { accessToken }).then(({ data }) => {
+			setLogs((prev) => [...prev, data])
 			if (cb) cb(data)
-		}).catch((data) => setLogs([...logs, data]))
-	}
+		}).catch((data) => setLogs((prev) => [...prev, data]))
+	}, [accessToken])
 
-	const get = (data) => {
-		api.get(data, { accessToken }).then(({ data }) => setLogs([...logs, data])).catch((data) => setLogs([...logs, data]))
-	}
+	const get = useCallback((payload) => {
+		api.get(payload, { accessToken })
+			.then(({ data }) => setLogs((prev) => [...prev, data]))
+			.catch((data) => setLogs((prev) => [...prev, data]))
+	}, [accessToken])
 
 	useEffect(() => {
 		post({ path: 'login', data: { login, password } }, ({ accessToken }) => setAccessToken(accessToken))
-	}, [])
+	}, [login, password, post])
 
 	return (
 		<Row>

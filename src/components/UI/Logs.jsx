@@ -27,8 +27,14 @@ const Logs = ({ logs, ...props }) => {
 							))
 							:
 							Object.entries(log.response).map(([key, value]) => {
-								if (key === 'status' || key === 'statusText')
-									return ( <Typography color={red[500]} key={key}>{`${key}: ${value}`}</Typography>)
+								if (key === 'status' || key === 'statusText') {
+									return (
+										<Typography color={red[500]} key={key}>
+											{`${key}: ${value}`}
+										</Typography>
+									)
+								}
+								return null
 							})
 						}
 					</Box>

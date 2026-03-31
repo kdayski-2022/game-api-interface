@@ -1,70 +1,91 @@
-# Getting Started with Create React App
+# game-api-interface
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Веб-интерфейс (SPA) для работы с **Game Server API**: просмотр/управление сущностями игры (поля добычи, ресурсы, склад, земли, баланс, здания, пользователь) через HTTP-запросы к серверу.
 
-## Available Scripts
+## Технологии
 
-In the project directory, you can run:
+- **React 17** + **Create React App** (`react-scripts`)
+- **React Router DOM v5**
+- **MUI (v5)** / **Material-UI (v4)**, **styled-components**
+- **axios**
+- **bootstrap / react-bootstrap**
 
-### `npm start`
+## Требования
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- **Node.js** (рекомендуется LTS)
+- **npm** (идёт вместе с Node.js)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Установка
 
-### `npm test`
+```bash
+npm install
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Запуск в режиме разработки
 
-### `npm run build`
+```bash
+npm start
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+После запуска приложение будет доступно по адресу, который выведет `react-scripts` (обычно `http://localhost:3000`).
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Сборка
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```bash
+npm run build
+```
 
-### `npm run eject`
+Собранные файлы появятся в папке `build/`.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Тесты
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```bash
+npm test
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Конфигурация API
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Клиент обращается к game-server через модуль `src/api/api.js`.
 
-## Learn More
+Сейчас базовый URL API **захардкожен**:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- `src/api/api.js` → `const gameServerApi = "http://dev.fanil.ru:45678"`
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Также в файле есть заготовка под переменную окружения:
 
-### Code Splitting
+- `// const gameServerApi = process.env.GAME_SERVER_API`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### Рекомендуемый способ (через `.env`)
 
-### Analyzing the Bundle Size
+1. Создайте файл `.env` в корне проекта.
+2. Добавьте переменную:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+```bash
+REACT_APP_GAME_SERVER_API=http://localhost:45678
+```
 
-### Making a Progressive Web App
+3. Обновите `src/api/api.js`, чтобы он читал `process.env.REACT_APP_GAME_SERVER_API` (в CRA все пользовательские переменные должны начинаться с `REACT_APP_`).
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## Маршруты приложения
 
-### Advanced Configuration
+Основные страницы (см. `src/App.js`):
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+- `/mining_field` — основная страница по умолчанию
+- `/main`
+- `/resource`
+- `/warehouse`
+- `/land`
+- `/balance`
+- `/building`
+- `/user`
 
-### Deployment
+## Структура проекта
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+- `public/` — статические файлы и HTML-шаблон
+- `src/` — исходники приложения
+  - `src/api/` — HTTP-клиент для Game Server API (axios)
+  - `src/views/` — страницы (экраны) приложения
+  - `src/components/` — UI-компоненты
+  - `src/route/` — layout/обвязка роутинга
+  - `src/theme/` — тема MUI
 
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
